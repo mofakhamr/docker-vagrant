@@ -1,17 +1,17 @@
 FROM ubuntu:14.04
 
 RUN apt-get update -y
-RUN apt-get install -qq -y wget
 
-#RUN wget http://nginx.org/keys/nginx_signing.key && apt-key add nginx_signing.key
-#RUN echo deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx >> /etc/apt/sources.list
-#RUN echo deb-src http://nginx.org/packages/mainline/ubuntu/ trusty nginx >> /etc/apt/sources.list
+# NGINX FROM SOURCE
+# RUN apt-get install -qq -y wget
+# RUN wget http://nginx.org/keys/nginx_signing.key && apt-key add nginx_signing.key
+# RUN echo deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx >> /etc/apt/sources.list
+# RUN echo deb-src http://nginx.org/packages/mainline/ubuntu/ trusty nginx >> /etc/apt/sources.list
 
-RUN apt-get update
 RUN apt-get install -qq -y \
  openssh-server curl nano git nginx mysql-client php5-mysql php-pear php5-fpm php5-gd nginx-extras
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+#RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 RUN sed -i s/\;cgi\.fix_pathinfo\s*\=\s*1/cgi.fix_pathinfo\=0/ /etc/php5/fpm/php.ini
 
@@ -37,8 +37,8 @@ VOLUME ["/var/www", "/var/www"]
 
 EXPOSE 22 80 443
 
-#CMD ["nginx", "-g", "daemon off"]
 
-CMD ["/bin/bash"]
+RUN /etc/init.d/php5-fpm start
+RUN service nginx start
 
 CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
