@@ -16,7 +16,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.build_args = "-t='stack/mysql:1.0'"
       d.name = "mysqlserver"
       d.has_ssh = true
-      d.ports = ["192.168.1.41:3306:3306"]
+      d.create_args = ['-p', '192.168.1.41:3306:3306']
+#      d.ports = ["192.168.1.41:3306:3306"]
       d.volumes = ["/vagrant/data:/var/lib/mysql"]
     end
   end
@@ -27,7 +28,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      d.build_args = "-t='stack/nginx:1.0'"
      d.name = "web"
      d.has_ssh = true
-     d.ports = ["192.168.1.40:80:80"]
+#     d.ports = ["192.168.1.40:80:80"]
+     d.create_args = ['-p', '192.168.1.42:80:80']
 #    config.vm.provision :shell, :path => "bootstrap.sh"
 #    http://stackoverflow.com/questions/26831761/how-to-run-provision-sh-on-vagrant-with-docker-provider
      d.volumes = ["/var/www:/var/www"]
