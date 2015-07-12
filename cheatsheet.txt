@@ -1,0 +1,43 @@
+BEST TRAINING VID BUT BIT SLOW : https://training.docker.com/docker-fundamentals
+
+
+# DOCKER UI !!!
+# docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
+
+
+# BUILD
+sudo docker build -t=rob/mysql:1.0 .
+sudo docker rm web
+
+# UPDATE BUILD
+sudo docker commit -m "Added defalt DB" 1cce5226c5f9 rob/mysql:1.1
+sudo docker commit -m "Adding user and groups" d0001cae1569 rob/nginx:1.1
+
+# RUN MYSQL
+(each host restart) sudo ip addr add 192.168.1.41/21 dev em1
+sudo docker run --name mysql-server -p 192.168.1.41:3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:5.5
+
+# RUN WEB WITH SHARING IP
+(each host restart) sudo ip addr add 192.168.1.40/21 dev em1
+sudo docker run --name web --link mysql-server:web -p 192.168.1.40:80:80 -v /var/www:/var/www -it rob/nginx:1.0 bash
+
+
+# ATTACH MYSQL SERVER DATA PERSISTENCE
+>>> http://jdevesa.github.io/2014/12/26/peristent-portable-mysql-containers.html
+<< BETTER >> https://groups.google.com/forum/#!topic/docker-user/CcK-3UVSCrM
+
+
+
+
+#GET BACK IN LATER ... really?
+sudo docker exec -i -t HASHMARK bash
+sudo docker exec -i -t 16f2f5d5f9b9 bash
+sudo docker exec -i -t 1cce5226c5f9 bash
+sudo docker exec -i -t ecb28b32dc9e bash
+sudo docker run --name mysql-server -p 192.168.1.41:3306:3306 -e MYSQL_ROOT_PASSWORD=password -d test/mysql:1.0
+
+
+# Environment in one go:
+sudo docker run --name mysql-server -p 192.168.1.41:3306:3306 -e MYSQL_ROOT_PASSWORD=password -d rob/mysql:1.1
+sudo docker run --name web --link mysql-server:web -p 192.168.1.40:2020:22 -p 192.168.1.40:80:80 -v /var/www:/var/www -it rob/nginx:1.1 bash
+
