@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      d.name = "web"
      d.has_ssh = true
 #     d.ports = ["192.168.1.40:80:80"]
-     d.create_args = ['-p', '192.168.1.42:80:80']
+     d.create_args = ['-p', '192.168.1.42:80:8080']
 #    config.vm.provision :shell, :path => "bootstrap.sh"
 #    http://stackoverflow.com/questions/26831761/how-to-run-provision-sh-on-vagrant-with-docker-provider
      d.volumes = ["/var/www:/var/www"]
