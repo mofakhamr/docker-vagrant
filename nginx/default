@@ -1,0 +1,99 @@
+server {
+
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log error;
+
+        server_name docker.local;
+        root /var/www/vanilla/htdocs;
+        index index.html index.php;
+
+        # start customiseses
+        gzip_static on;
+        gzip on;
+        send_timeout 360;
+        keepalive_timeout     20;
+        fastcgi_read_timeout 360;
+
+        client_header_timeout 360;
+        client_body_timeout 360;
+        client_body_buffer_size 8K;
+        client_header_buffer_size 4k;
+        client_max_body_size 2m;
+        large_client_header_buffers 2 16k;
+
+        listen   80; ## listen for ipv4; this line is default and implied
+        #listen   [::]:8000 default ipv6only=on; ## listen for ipv6
+
+        location ~ ^/(status|ping|apc_info.php)$  {
+                include fastcgi_params;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_param   PATH_INFO         $fastcgi_path_info;
+                fastcgi_param   SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                stub_status on;
+                #access_log off;
+                allow 127.0.0.1;
+                allow 192.168.1.40;
+                deny all;
+        }
+	
+	# Fighting with ImageCache? This little gem is amazing.
+	location ~ ^/sites/.*/files/styles/ {
+	    try_files $uri @rewrite;
+	}
+	# Catch images styles for D7 too
+	location ^~ /files/styles/ {
+	        try_files $uri @rewrite;
+	}
+
+
+	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+	    expires max;
+	    log_not_found off;
+	}
+	
+	location / {
+	        # First attempt to serve request as file, then
+	        # as directory, then fall back to index.html
+	        try_files $uri $uri/ @rewrite;
+	}
+	
+	location @rewrite {
+	        rewrite ^/(.*)$ /index.php?q=$1;
+	}
+
+	location /doc/ {
+        	alias /usr/share/doc/;
+         	autoindex on;
+         	allow 127.0.0.1;
+        	deny all;
+	}
+	# redirect server error pages to the static page /50x.html
+	#
+	#error_page 500 502 503 504 /50x.html;
+	#location = /50x.html {
+	#       root /usr/share/nginx/www;
+	#}
+	
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	location ~ \.php$ {
+	        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        	fastcgi_index index.php;	
+	        include fastcgi_params;
+	        fastcgi_pass backend_pool;
+	        fastcgi_keep_conn on;
+
+	}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	location ~ /\.ht {
+	        deny all;
+	}
+}
+
+
+upstream backend_pool {
+        server   unix:/var/run/php5-fpm.sock max_fails=3 fail_timeout=60s;
+}
