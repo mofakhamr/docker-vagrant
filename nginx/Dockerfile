@@ -66,6 +66,25 @@ RUN echo "/etc/init.d/nginx start" >> /etc/bash.bashrc
 
 VOLUME ["/var/www", "/var/www"]
 
+#
+#		DOWNLOAD COMPOSER & PLATFORM.SH
+#			- Will download the full project.. no DB tho.
+#
+#
+#	got clone https://github.com/tes/cms-the-docker.git /TO/SOME/WHERE/USEFUL
+#
+#
+#
+#curl -sS https://getcomposer.org/installer | php
+#sudo mv composer.phar /usr/local/bin/composer
+#composer global require platformsh/cli:@stable
+#composer global reequire drush/drush:7.*
+#export PATH="$HOME/.composer/vendor/bin:$PATH"
+#. "$HOME/.composer/vendor/platformsh/cli/platform.rc" 2> /dev/null
+#
+#
+#
+
 EXPOSE 22 80 443
 
 CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
