@@ -1,8 +1,11 @@
 BEST TRAINING VID BUT BIT SLOW : https://training.docker.com/docker-fundamentals
 
 
+
+				!!!    NO-PARALLEL    !!!
+
 # DOCKER UI !!!
-# docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
+# docker run -d --name dockerui -p 9001:9001 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
 
 
 # BUILD
@@ -26,7 +29,7 @@ sudo docker run --name web --link mysql-server:web -p 192.168.1.40:80:80 -v /var
 >>> http://jdevesa.github.io/2014/12/26/peristent-portable-mysql-containers.html
 << BETTER >> https://groups.google.com/forum/#!topic/docker-user/CcK-3UVSCrM
 
-
+sudo docker run --name mysqlserver -p 192.168.1.41:3306:3306 -v /vagrant/data:/var/lib/mysql -t rob/mysql:1.0
 
 
 #GET BACK IN LATER ... really?

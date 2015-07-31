@@ -15,10 +15,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.build_dir = "mysql"
       d.build_args = "-t='stack/mysql:1.0'"
       d.name = "mysqlserver"
-      d.has_ssh = true
+      #d.has_ssh = true
       d.create_args = ['-p', '192.168.1.41:3306:3306']
-      d.volumes = ["/vagrant/data:/var/lib/mysql"]
+      #d.volumes = ["/vagrant/data:/var/lib/mysql"]
     end
+    #db.ssh.port = 22
+    #db.ssh.private_key_path = "id_rsa"
   end
 
   config.vm.define "app" do |app|
@@ -30,10 +32,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      d.create_args = ['-p', '192.168.1.42:80:80']
 #    config.vm.provision :shell, :path => "bootstrap.sh"
 #    http://stackoverflow.com/questions/26831761/how-to-run-provision-sh-on-vagrant-with-docker-provider
-     d.volumes = ["/var/www:/var/www"]
-     d.link("mysqlserver:web")
+    d.volumes = ["/var/www/the:/var/www/the"]
+    d.link("mysqlserver:web")
    end  
    config.ssh.port = 22
   end
-
 end
