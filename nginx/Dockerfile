@@ -19,6 +19,7 @@ RUN \
     # Install packages
     DEBIAN_FRONTEND=noninteractive \
     apt-get -y install nano openssh-server \
+    curl git zip \
     php5-fpm php5-mysql php5-imagick \
     php5-mcrypt php5-curl php5-cli php5-gd php5-sqlite php5-common  \
     php-pear php5-json php5-memcache \
@@ -30,6 +31,8 @@ RUN \
 RUN php5enmod mcrypt
 
 COPY default /etc/nginx/sites-available/default
+COPY install-composer-platform /tmp/install-composer-platform
+RUN chmod +x /tmp/install-composer-platform
 
 # UPDATE NGINX CONFIGS
 RUN \
@@ -59,19 +62,15 @@ RUN echo -n 'vagrant:vagrant' | chpasswd
 # Enable passwordless sudo for the "vagrant" user
 RUN echo 'vagrant ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/vagrant
 
-
-# do these work??
 RUN echo "/etc/init.d/php5-fpm start" >> /etc/bash.bashrc
 RUN echo "/etc/init.d/nginx start" >> /etc/bash.bashrc
-
-VOLUME ["/var/www", "/var/www"]
 
 #
 #		DOWNLOAD COMPOSER & PLATFORM.SH
 #			- Will download the full project.. no DB tho.
 #
 #
-#	got clone https://github.com/tes/cms-the-docker.git /TO/SOME/WHERE/USEFUL
+#	git clone https://github.com/tes/cms-the-docker.git /TO/SOME/WHERE/USEFUL
 #
 #
 #
@@ -85,6 +84,10 @@ VOLUME ["/var/www", "/var/www"]
 #
 #
 
+
+
+
+VOLUME ["/var/www", "/var/www"]
 EXPOSE 22 80 443
 
 CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no

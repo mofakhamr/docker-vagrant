@@ -5,7 +5,18 @@ BEST TRAINING VID BUT BIT SLOW : https://training.docker.com/docker-fundamentals
 				!!!    NO-PARALLEL    !!!
 
 # DOCKER UI !!!
-# docker run -d --name dockerui -p 9001:9001 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
+# docker run -d --name dockerui -p 9001:127.0.0.1:9001 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
+## docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
+
+## MAJA FACKKAS >>> THIS WORKS >>> 
+docker run -d  -p 127.0.0.1:9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock dockerui/dockerui
+sive
+
+
+172.17.42.1
+
+172.17.42.31
+172.17.42.32
 
 
 # BUILD
@@ -44,3 +55,59 @@ sudo docker run --name mysql-server -p 192.168.1.41:3306:3306 -e MYSQL_ROOT_PASS
 sudo docker run --name mysql-server -p 192.168.1.41:3306:3306 -e MYSQL_ROOT_PASSWORD=password -d rob/mysql:1.1
 sudo docker run --name web --link mysql-server:web -p 192.168.1.40:2020:22 -p 192.168.1.40:80:80 -v /var/www:/var/www -it rob/nginx:1.1 bash
 
+
+drush --y pm-enable the_responsive
+drush vset theme_default the_responsive
+
+
+
+
+
+## REQUIRES ##
+#
+# Git Credentials
+# Platform Credentials (or input)
+# Git registered Email Address
+#
+##
+
+
+# Install Composer Globally.
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install Drush and Platform
+composer global require drush/drush:7.*
+composer global require platformsh/cli:@stable
+
+# @TODO: Check the O/S and tell non-nixers to stop being sheep.
+export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+# Add platform auto complete.
+. "$HOME/.composer/vendor/platformsh/cli/platform.rc" 2>/dev/null
+
+# Authenticate with platformv
+# Generate a public if not already done.
+ssh-keygen -t rsa -b 4096 -C "robin@mofakham.co.uk"
+# Manually Enter SSH key into your Platform Account.
+
+# Manually login to Platform.
+platform
+platform get
+# manually config
+- accept defaults
+# Set remote url to github not just platform
+git remote set-url origin git@github.com:tes/cms-the-platform.git
+
+
+
+# Checkout and configure the Git Repo.
+sudo mkdir -p /var/www/cms-the-platform
+cd /var/www/cms-the-platform
+# <<  REQUIRES WORKING CREDENTIALS >>
+git clone https://github.com/tes/cms-the-platform.git .
+cd  /var/www/cms-the-platform/repository
+
+
+-- functional testing --
+http://feature_functional_testing-myki2kbe5qk76.eu.platform.sh/
+http://feature_functional_testing-myki2kbe5qk76.eu.platform.sh/world-university-rankings/2015/world-ranking#/page/0/length/10

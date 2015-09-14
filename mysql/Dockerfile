@@ -6,6 +6,8 @@ RUN apt-get update -y
 COPY mysqlpwdseed /root/mysqlpwdseed
 RUN debconf-set-selections /root/mysqlpwdseed
 
+COPY db.sql.tar.gz /home/vagrant/db.sql.tar.gz
+
 RUN apt-get install -y openssh-server mysql-server
 
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
@@ -33,16 +35,13 @@ RUN echo 'vagrant ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/vagrant
 
 
 
-#RUN /usr/bin/mysqld_safe
-#RUN service mysql restart
+# RUN /usr/bin/mysqld_safe
+# RUN service mysql start
+# CMD /usr/bin/mysqld_safe
 
 EXPOSE 22 3306
 
-#CMD ["/usr/bin/mysqld_safe"]
+##CMD ["/usr/bin/mysqld_safe"]
 
-CMD /usr/bin/mysqld_safe
-
-#CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
-#CMD /usr/sbin/sshd -D
 
 CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
