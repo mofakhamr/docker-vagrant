@@ -3,7 +3,7 @@ server {
         access_log /var/log/nginx/the-access.log;
         error_log /var/log/nginx/the-error.log error;
 
-        server_name local.timeshighereducation.co.uk;
+        server_name local.timeshighereducation.co.uk/www;
         root /var/www/times-higher-education;
         index index.html index.php;
 
