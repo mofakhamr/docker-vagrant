@@ -6,6 +6,10 @@ RUN apt-get update -y
 COPY mysqlpwdseed /root/mysqlpwdseed
 RUN debconf-set-selections /root/mysqlpwdseed
 
+# Copy db import script
+COPY install-db /tmp/install-db
+RUN chmod +x /tmp/install-db
+
 COPY db.sql.tar.gz /home/vagrant/db.sql.tar.gz
 
 RUN apt-get install -y openssh-server mysql-server
@@ -44,4 +48,9 @@ EXPOSE 22 3306
 ##CMD ["/usr/bin/mysqld_safe"]
 
 
-CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
+#CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
+
+ADD startup.sh /opt/startup.sh
+RUN chmod +x /opt/startup.sh
+#CMD ["/bin/bash", "/opt/startup.sh"]
+CMD bash -C '/opt/startup.sh';'bash'

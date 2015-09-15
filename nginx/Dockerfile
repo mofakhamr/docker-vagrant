@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-RUN apt-get update -y
+#RUN apt-get update -y
 
 # NGINX FROM SOURCE
 # RUN apt-get install -qq -y wget
@@ -31,6 +31,7 @@ RUN \
 RUN php5enmod mcrypt
 
 COPY default /etc/nginx/sites-available/default
+
 COPY install-composer-platform /tmp/install-composer-platform
 RUN chmod +x /tmp/install-composer-platform
 
@@ -84,10 +85,10 @@ RUN echo "/etc/init.d/nginx start" >> /etc/bash.bashrc
 #
 #
 
-
-
-
 VOLUME ["/var/www", "/var/www"]
 EXPOSE 22 80 443
 
-CMD /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no
+ADD startup.sh /opt/startup.sh
+RUN chmod +x /opt/startup.sh
+#CMD ["/bin/bash", "/opt/startup.sh"]
+CMD bash -C '/opt/startup.sh';'bash'

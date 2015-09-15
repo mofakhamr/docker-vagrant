@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #d.create_args = ['-p', '192.168.1.41:3306:3306']
       d.create_args = ['-p', '172.17.42.31:3306:3306']
 
-      d.volumes = ["/vagrant/data:/var/lib/mysql"]
+      d.volumes = ["/vagrant/data/mysql:/var/lib/mysql"]
     end
     #db.ssh.port = 22
     #db.ssh.private_key_path = "id_rsa"
